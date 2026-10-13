@@ -1,6 +1,7 @@
-﻿# 🩺 MediBot — End-to-End Medical Chatbot with LangChain, Pinecone & Google Gemini
+# 🩺 MediBot — End-to-End Medical Chatbot with LangChain, Pinecone & Google Gemini
 
 <p align="center">
+  <a href="https://medical-chatbot-bk77.onrender.com"><img src="https://img.shields.io/badge/Live_Demo-Render-46E3B7?logo=render&logoColor=white" alt="Live Demo" /></a>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python" alt="Python" />
   <img src="https://img.shields.io/badge/LangChain-0.3.x-1C3C3C?logo=langchain" alt="LangChain" />
   <img src="https://img.shields.io/badge/Pinecone-Serverless%20Vector%20DB-000000?logo=pinecone" alt="Pinecone" />
@@ -11,6 +12,8 @@
 </p>
 
 An enterprise-grade **Retrieval-Augmented Generation (RAG) conversational medical assistant** designed to parse comprehensive clinical literature, index vector embeddings in a serverless vector database, and generate clinically grounded, empathetic responses using Google's Gemini LLMs.
+
+> 🌐 **Live Demo:** Try the deployed chatbot here: [https://medical-chatbot-bk77.onrender.com](https://medical-chatbot-bk77.onrender.com)
 
 ---
 
@@ -88,6 +91,16 @@ medical-chatbot/
 
 ---
 
+## 🌐 Live Demo
+
+Experience the live deployed medical chatbot on Render:
+
+🔗 **[https://medical-chatbot-bk77.onrender.com](https://medical-chatbot-bk77.onrender.com)**
+
+> *Note: Hosted on Render free tier. If the instance has been idle, please allow 30–50 seconds for the initial cold start.*
+
+---
+
 ## 🚀 Getting Started
 
 ### 1. Clone and Setup Environment
@@ -154,3 +167,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 **Sai Goutham**
 * GitHub: [@saigoutham17](https://github.com/saigoutham17)
 * Project: [Medical Chatbot RAG System](https://github.com/saigoutham17/medical-chatbot)
+* Live Demo: [medical-chatbot-bk77.onrender.com](https://medical-chatbot-bk77.onrender.com)
