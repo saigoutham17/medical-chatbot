@@ -17,49 +17,41 @@ An enterprise-grade **Retrieval-Augmented Generation (RAG) conversational medica
 
 ---
 
-## 🏗️ RAG System Architecture
+## 🏗️ System Architecture
 
-`	ext
-       ┌────────────────────────┐
-       │   Medical Literature   │
-       │       (PDF Data)       │
-       └───────────┬────────────┘
-                   │ PyPDFLoader + RecursiveCharacterTextSplitter (500 chars, 20 overlap)
-                   ▼
-       ┌────────────────────────┐
-       │     Document Chunks    │
-       └───────────┬────────────┘
-                   │ HuggingFace (sentence-transformers/all-MiniLM-L6-v2)
-                   ▼
-       ┌────────────────────────┐
-       │   384-dim Embeddings   │
-       └───────────┬────────────┘
-                   │ Upsert Index
-                   ▼
-       ┌────────────────────────┐
-       │  Pinecone Vector DB    │ ◄── Cosine Similarity Retrieval (k=3)
-       └───────────┬────────────┘                       ▲
-                   │                                    │ Query Vector
-                   ▼ Retrieved Context                  │
-       ┌────────────────────────────────────────────────┴───────┐
-       │                    User Query Interface                │
-       │                   (Flask + Responsive UI)              │
-       └───────────────────────────┬────────────────────────────┘
-                                   │ Context + Strict Medical Prompt Template
-                                   ▼
-       ┌────────────────────────────────────────────────────────┐
-       │                 Google Gemini Pro LLM                  │
-       │        (Grounded Clinical Answer Generation)           │
-       └───────────────────────────┬────────────────────────────┘
-                                   ▼
-                            Verified Response
-`
+```text
+       ┌─────────────────────────────────────────────────────────────────────────┐
+       │                            Client Interfaces                            │
+       │    Web Chat Interface        REST API Client        Cloud Deployment    │
+       │ (Bootstrap + JS Dynamic)   (POST /get Endpoint)   (Render Microservice) │
+       └────────────────────────────────────┬────────────────────────────────────┘
+                                           │ HTTP / REST & Web Client Requests
+                                           ▼
+       ┌─────────────────────────────────────────────────────────────────────────┐
+       │                 Flask & LangChain RAG Core Orchestrator                 │
+       │                                                                         │
+       │  ├── Ingestion Pipeline (PyPDFLoader & RecursiveCharacterSplitter)      │
+       │  ├── Embedding Engine (Sentence-Transformers all-MiniLM-L6-v2)          │
+       │  ├── Vector Retrieval (Pinecone Serverless VectorStore, Top-k Cosine)   │
+       │  ├── Clinical Guardrails (Strict Medical Prompt & Context Grounding)    │
+       │  └── LLM Generation (Google Gemini Pro Grounded Clinical Synthesis)     │
+       └──────────┬─────────────────────────┬─────────────────────────┬──────────┘
+                  │                         │                         │
+                  ▼                         ▼                         ▼
+       ┌─────────────────────┐   ┌─────────────────────┐   ┌─────────────────────┐
+       │ Pinecone DB         │   │ HuggingFace Models  │   │ Google Gemini API   │
+       │ (Serverless Index)  │   │ (MiniLM-L6-v2)      │   │ (Gemini Pro LLM)    │
+       │ 384-dim Vectors,    │   │ Dense Embeddings,   │   │ Clinical Grounding, │
+       │ Cosine Similarity,  │   │ Sentence Encoding,  │   │ Reasoning Pipeline, │
+       │ Sub-100ms Queries   │   │ In-Memory Caching   │   │ Accurate Synthesis  │
+       └─────────────────────┘   └─────────────────────┘   └─────────────────────┘
+```
 
 ---
 
 ## 📁 Project Structure
 
-`	ext
+```text
 medical-chatbot/
 ├── data/
 │   └── Medical_book.pdf            # Comprehensive clinical reference literature
@@ -77,7 +69,7 @@ medical-chatbot/
 ├── setup.py                        # Package distribution metadata
 ├── .env.example                    # Environment variable configuration template
 └── README.md
-`
+```
 
 ---
 
@@ -105,7 +97,7 @@ Experience the live deployed medical chatbot on Render:
 
 ### 1. Clone and Setup Environment
 
-`ash
+```bash
 git clone https://github.com/saigoutham17/medical-chatbot.git
 cd medical-chatbot
 
@@ -115,33 +107,33 @@ source venv/bin/activate  # On Windows: .\venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
-`
+```
 
 ### 2. Configure Environment Variables
 
 Create a .env file based on .env.example:
 
-`env
+```env
 PINECONE_API_KEY="your_pinecone_api_key"
 PINECONE_INDEX_NAME="medical-chatbot"
 GOOGLE_API_KEY="your_google_gemini_api_key"
 GEMINI_MODEL="gemini-pro"
 PORT=8080
-`
+```
 
 ### 3. Ingest Documents & Build Vector Store
 
 Execute the ingestion pipeline to parse the medical reference books, generate vector embeddings, and upsert them into your Pinecone index:
 
-`ash
+```bash
 python store_index.py
-`
+```
 
 ### 4. Launch the Medical Chatbot
 
-`ash
+```bash
 python app.py
-`
+```
 
 Navigate to http://localhost:8080 in your browser to interact with the medical assistant.
 
